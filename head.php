@@ -7,3 +7,5 @@
 	
 	<link rel="stylesheet" href="css/custom.css">
 	<link rel=icon href='img/logo-icon.png' sizes="32x32" type="image/png">
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

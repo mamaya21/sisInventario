@@ -31,7 +31,7 @@
 
 		$query_update = mysqli_query($con, $sql);
 		if ($query_update) {
-			$messages[] = "Remitente ha sido actualizado satisfactoriamente.";
+			$messages[] = "El tipo de material se ha sido actualizado satisfactoriamente.";
 		} else {
 			$errors[] = "Lo siento, algo ha salido mal. Intenta nuevamente. Error: " . mysqli_error($con);
 		}

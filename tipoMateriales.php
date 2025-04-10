@@ -95,7 +95,7 @@
 		<div class="panel-body">
 
 			<?php
-				include("modal/registro_remitentes.php");
+				include("modal/nuevo_Tipo.php");
 				include("modal/editar_tipoMateriales.php");
 			?>
 			<form class="form-horizontal" role="form" id="datos_cotizacion">

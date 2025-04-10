@@ -19,42 +19,20 @@
 		}
 
 
-
-			function eliminar (id)
-		{
-			var q= $("#q").val();
-		if (confirm("Realmente deseas eliminar el remitente")){
-		$.ajax({
-        type: "GET",
-        url: "./ajax/buscar_remitentes.php",
-        data: "id="+id,"q":q,
-		 beforeSend: function(objeto){
-			$("#resultados").html("Mensaje: Cargando...");
-		  },
-        success: function(datos){
-		$("#resultados").html(datos);
-		load(1);
-		}
-			});
-		}
-		}
-
-
-
-$( "#guardar_remitente" ).submit(function( event ) {
+$( "#guardar_tipo" ).submit(function( event ) {
   $('#guardar_datos').attr("disabled", true);
 
  var parametros = $(this).serialize();
 	 $.ajax({
 			type: "POST",
-			url: "ajax/nuevo_remitente.php",
+			url: "ajax/nuevo_tipo.php",
 			data: parametros,
 			 beforeSend: function(objeto){
 				$("#resultados_ajax").html("Mensaje: Cargando...");
 			  },
 			success: function(datos){
 			$("#resultados_ajax").html(datos);
-			$("#guardar_remitente")[0].reset();
+			$("#guardar_tipo")[0].reset();
 			$('#guardar_datos').attr("disabled", false);
 			load(1);
 		  }
@@ -62,13 +40,13 @@ $( "#guardar_remitente" ).submit(function( event ) {
   event.preventDefault();
 })
 
-$( "#editar_remitente" ).submit(function( event ) {
+$( "#editar_tipo" ).submit(function( event ) {
   $('#actualizar_datos').attr("disabled", true);
 
  var parametros = $(this).serialize();
 	 $.ajax({
 			type: "POST",
-			url: "ajax/editar_remitente.php",
+			url: "ajax/editar_tipo.php",
 			data: parametros,
 			 beforeSend: function(objeto){
 				$("#resultados_ajax2").html("Mensaje: Cargando...");
@@ -99,3 +77,47 @@ $( "#editar_remitente" ).submit(function( event ) {
 		function imprimir_reporte(q){
 			VentanaCentrada('./pdf/documentos/ver_rep_remitentes.php?q='+q,'Reporte','','1024','768','true');
 		}
+
+
+
+	function eliminar_tipo(id){
+
+		var q= $("#q").val();
+
+		Swal.fire({
+			title: "Eliminar",
+			text: "Realmente deseas eliminar el tipo de material?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#d33",
+			//cancelButtonColor: "#3085d6",
+			confirmButtonText: "Eliminar",
+			cancelButtonText: "Cancelar"
+		  }).then((result) => {
+			if (result.isConfirmed) {
+
+				$.ajax({
+					type: "GET",
+					url: "./ajax/buscar_tipoMateriales.php",
+					data: "id="+id,"q":q,
+					 beforeSend: function(objeto){
+						$("#resultados").html("Mensaje: Cargando...");
+					  },
+					success: function(datos){
+						Swal.fire({
+							title: "Eliminado!",
+							text: "El tipo de material ha sido eliminado.",
+							icon: "success"
+						});
+
+						$("#resultados").html(datos);
+						load(1);
+					}
+				});
+			  
+			}
+		  });
+	}
+
+
+		

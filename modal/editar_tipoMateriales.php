@@ -31,10 +31,9 @@
 			  <div class="form-group">
 				<label for="mod_descripcion" class="col-sm-3 control-label">Descripción</label>
 				<div class="col-sm-8">
-				  <input type="text" class="form-control" id="mod_descripcion" name="mod_descripcion"  required>
+				  <textarea class="form-control" id="mod_descripcion" name="mod_descripcion" ></textarea>
 				</div>
 			  </div>
-
 
 			  <div class="form-group">
 				<label for="mod_estado" class="col-sm-3 control-label">Estado</label>

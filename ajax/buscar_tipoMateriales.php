@@ -127,7 +127,7 @@
 								<a href="#" class='btn btn-default' title='Editar Tipo' onclick="obtener_datos('<?php echo $id_tipo; ?>');" data-toggle="modal" data-target="#myModal2">
 									<i class="glyphicon glyphicon-edit"></i>
 								</a>
-								<a href="#" class='btn btn-default' title='Borrar Tipo' onclick="eliminar('<?php echo $id_tipo; ?>')">
+								<a href="#" class='btn btn-default' title='Borrar Tipo' onclick="eliminar_tipo('<?php echo $id_tipo; ?>')">
 									<i class="glyphicon glyphicon-trash"></i>
 								</a>
 							</td>
