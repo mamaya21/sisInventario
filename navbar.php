@@ -23,7 +23,7 @@
         <li class="<?php echo $active_materiales;?>"><a href="materiales.php"><i class='glyphicon glyphicon-barcode'></i> Materiales<span class="sr-only">(current)</span></a></li>
         <li class="<?php echo $active_tipos;?>"><a href="tipoMateriales.php"><i class='glyphicon glyphicon-list-alt'></i> Tipos de Materiales</a></li>
         <li class="<?php echo $active_unidades;?>"><a href="unidadesMedida.php"><i class='glyphicon glyphicon-list-alt'></i> Unidades de Medida</a></li>
-        <li class="<?php echo $active_reportes;?>"><a href="reportes.php"><i class='glyphicon glyphicon-paperclip'></i> Reportes</a></li>
+        <!-- <li class="<?php echo $active_reportes;?>"><a href="reportes.php"><i class='glyphicon glyphicon-paperclip'></i> Reportes</a></li> -->
 
     <?php
       if($_SESSION['facilidad']=="Administrador"){

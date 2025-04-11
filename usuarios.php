@@ -13,15 +13,17 @@
 	/* Connect To Database*/
 	require_once ("config/db.php");//Contiene las variables de configuracion para conectar a la base de datos
 	require_once ("config/conexion.php");//Contiene funcion que conecta a la base de datos
-	$active_facturas="";
-	$active_guias="";
-	$active_clientes="";
-	$active_remitentes="";
-	$active_subcontrata="";
-	$active_transportes="";
+
+	$action="";
+	$active_stock= "";
+	$active_movimientos="";
+	$active_materiales="";
+	$active_tipos="";	
+	$active_unidades="";
+	$active_reportes = "";
 	$active_usuarios="active";
-	$active_tarifarios="";	
-	$title="Usuarios | Facturación CIMEK";
+
+	$title="Usuarios";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,10 +81,6 @@
 	include("footer.php");
 	?>
 	<script type="text/javascript" src="js/usuarios.js"></script>
-
-
-
-
 
   </body>
 </html>
@@ -148,7 +146,8 @@ $( "#editar_password" ).submit(function( event ) {
 	});
   event.preventDefault();
 })
-	function get_user_id(id){
+
+function get_user_id(id){
 		$("#user_id_mod").val(id);
 	}
 

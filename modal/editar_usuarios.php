@@ -21,7 +21,8 @@
 				<label for="facilidad2" class="col-sm-3 control-label">Facilidad</label>
 				<div class="col-sm-8">
 				  <select class='form-control input-sm' id="facilidad2" name="facilidad2">
-						<option value="Administrador">Administrador</option>
+				  		<option value="Administrador">Administrador</option>
+						<option value="Supervisor">Supervisor</option>
 						<option selected value="Usuario">Usuario</option>
 					</select>
 				</div>

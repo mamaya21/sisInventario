@@ -20,6 +20,7 @@
 				<div class="col-sm-8">
 				  <select class='form-control input-sm' id="facilidad" name="facilidad">
 									<option value="Administrador">Administrador</option>
+									<option value="Supervisor">Supervisor</option>
 									<option selected value="Usuario">Usuario</option>
 					</select>
 				</div>

@@ -30,8 +30,9 @@ if (version_compare(PHP_VERSION, '5.3.7', '<')) {
 					
                
 					// write new user's data into database
-                    $sql = "update Usuarios SET pass='".$user_password_hash."' WHERE id_usuario='".$user_id."'";
-                    $query = odbc_exec($con,$sql);
+                    $sql = "update Usuarios SET pass='".$user_password_hash."', usuario_modifica='".$_SESSION['user_id']."', fecha_modifica= DATE(NOW()) 
+					 WHERE id_usuario='".$user_id."'";
+                    $query = mysqli_query($con,$sql);
 
                     // if user has been added successfully
                     if ($query) {

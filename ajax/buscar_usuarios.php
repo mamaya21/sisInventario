@@ -10,46 +10,41 @@
 	require_once ("../config/conexion.php");//Contiene funcion que conecta a la base de datos
 	include('is_logged.php');//Archivo verifica que el usario que intenta acceder a la URL esta logueado
 	$action = (isset($_REQUEST['action'])&& $_REQUEST['action'] !=NULL)?$_REQUEST['action']:'';
-	if (isset($_GET['id'])){
-		$user_id=intval($_GET['id']);
-		$query=odbc_exec($con, "select * from Usuarios where id_usuario='".$user_id."'");
-		$rw_user=odbc_fetch_array($query);
-		$count=$rw_user['id_usuario'];
-		if ($count!=0){
-			$delet="delete from Usuarios WHERE id_usuario='".$user_id."'";
-			if ($delete1=odbc_exec($con,$delet)){
-			?>
-			<div class="alert alert-success alert-dismissible" role="alert">
-			  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			  <strong>Aviso!</strong> Datos eliminados exitosamente.
-			</div>
-			<?php
-		}else {
-			?>
-			<div class="alert alert-danger alert-dismissible" role="alert">
-			  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			  <strong>Error!</strong> Lo siento algo ha salido mal intenta nuevamente.
-			</div>
-			<?php
-
+	if (isset($_GET['id'])) {
+		$user_id = intval($_GET['id']);
+	
+		// Consulta para verificar si el usuario existe
+		$query = mysqli_query($con, "SELECT * FROM Usuarios WHERE id_usuario = '$user_id'");
+		$rw_user = mysqli_fetch_array($query);
+	
+		if ($rw_user) {
+			// Si existe, eliminamos el registro
+			$delete = "DELETE FROM Usuarios WHERE id_usuario = '$user_id'";
+			$delete_result = mysqli_query($con, $delete);
+	
+			if ($delete_result) {
+				?>
+				<div class="alert alert-success alert-dismissible" role="alert">
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				  <strong>Aviso!</strong> Datos eliminados exitosamente.
+				</div>
+				<?php
+			} else {
+				?>
+				<div class="alert alert-danger alert-dismissible" role="alert">
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				  <strong>Error!</strong> Lo siento, algo ha salido mal. Intenta nuevamente.
+				</div>
+				<?php
+			}
 		}
-
-		}
-		/*else {
-			?>
-			<div class="alert alert-danger alert-dismissible" role="alert">
-			  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			  <strong>Error!</strong> No se puede borrar el usuario administrador.
-			</div>
-			<?php
-		}*/
-
 	}
+	
 	if($action == 'ajax'){
 		// escaping, additionally removing everything that could be (html/javascript-) code
          $q = $_REQUEST['q'];
          $q= str_replace("'", "''", $q);
-		 $aColumns = array('usuario', 'planta');//Columnas de busqueda
+		 $aColumns = array('usuario');//Columnas de busqueda
 		 $sTable = "Usuarios";
 		 $sWhere = "";
 		if ( $_GET['q'] != "" )
@@ -63,20 +58,25 @@
 			$sWhere .= ')';
 		}
 		include 'pagination.php'; //include pagination file
+
 		//pagination variables
-		$page = (isset($_REQUEST['page']) && !empty($_REQUEST['page']))?$_REQUEST['page']:1;
-		$per_page = 10; //how much records you want to show
-		$adjacents  = 4; //gap between pages after number of adjacents
+		$page = (isset($_REQUEST['page']) && !empty($_REQUEST['page'])) ? $_REQUEST['page'] : 1;
+		$per_page = 10; // cuántos registros mostrar por página
+		$adjacents = 4; // separación entre páginas adyacentes
 		$offset = ($page - 1) * $per_page;
-		//Count the total number of row in your table*/
-		$count_query   = odbc_exec($con, "select  count(*) AS numrows FROM $sTable  $sWhere");
-		$row= odbc_fetch_array($count_query);
+
+		// Contar el total de registros
+		$count_query = mysqli_query($con, "SELECT COUNT(*) AS numrows FROM $sTable $sWhere");
+		$row = mysqli_fetch_array($count_query);
 		$numrows = $row['numrows'];
-		$total_pages = ceil($numrows/$per_page);
+		$total_pages = ceil($numrows / $per_page);
+
 		$reload = './usuarios.php';
-		//main query to fetch the data
-		$sql="select * from  $sTable $sWhere order by id_usuario ";
-		$query = odbc_exec($con, $sql);
+
+		// Consulta principal con paginación
+		$sql = "SELECT * FROM $sTable $sWhere ORDER BY id_usuario LIMIT $offset, $per_page";
+		$query = mysqli_query($con, $sql);
+
 		//loop through fetched data
 		if ($numrows>0){
 
@@ -93,7 +93,7 @@
 
 				</tr>
 				<?php
-				while ($row=odbc_fetch_array($query)){
+				while ($row = mysqli_fetch_array($query)) {
 						$user_id=$row['id_usuario'];
 						//$fullname=$row['firstname']." ".$row["lastname"];
 						$user_name=$row['usuario'];

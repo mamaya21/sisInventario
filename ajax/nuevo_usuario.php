@@ -1,4 +1,5 @@
 <?php
+require_once("../classes/Login.php");
 include('is_logged.php');//Archivo verifica que el usario que intenta acceder a la URL esta logueado
 // checking for minimum PHP version
 if (version_compare(PHP_VERSION, '5.3.7', '<')) {
@@ -46,23 +47,26 @@ if (version_compare(PHP_VERSION, '5.3.7', '<')) {
 
                 //otra forma de encriptar(base64 encode decode)
 				$user_password_hash=base64_encode(base64_encode($user_password));
-                // check if user or email address already exists
-                $sql = "select * FROM Usuarios WHERE usuario = '" . $user_name . "' ;";
-                $query_check_user_name = odbc_exec($con,$sql);
-				$query_check_user=odbc_num_rows($query_check_user_name);
-                if ($query_check_user == 1) {
-                    $errors[] = "Lo sentimos , el nombre de usuario ya está en uso.";
-                } else {
-					// write new user's data into database
-                    $sql = "insert into Usuarios (usuario,pass,usuario_crea,fecha_crea,facilidad,email)
-                            VALUES('" . $user_name . "', '" . $user_password_hash . "','".$_SESSION['user_id']."','".$date_added."','".$user_facilidad."','" . $user_email . "');";
-                    $query_new_user_insert = odbc_exec($con,$sql);
 
-                    // if user has been added successfully
+                $usuario_crea = $_SESSION['user_id'];
+                
+                // Verificar si el usuario ya existe
+                $sql = "SELECT * FROM Usuarios WHERE usuario = '$user_name'";
+                $query_check_user_name = mysqli_query($con, $sql);
+                $query_check_user = mysqli_num_rows($query_check_user_name);
+
+                if ($query_check_user == 1) {
+                    $errors[] = "Lo sentimos, el nombre de usuario ya está en uso.";
+                } else {
+                    // Insertar nuevo usuario
+                    $sql = "INSERT INTO Usuarios (usuario, pass, usuario_crea, fecha_crea, facilidad, email)
+                            VALUES ('$user_name', '$user_password_hash', '$usuario_crea', DATE(NOW()), '$user_facilidad', '$user_email')";
+                    $query_new_user_insert = mysqli_query($con, $sql);
+
                     if ($query_new_user_insert) {
                         $messages[] = "La cuenta ha sido creada con éxito.";
                     } else {
-                        $errors[] = "Lo sentimos , el registro falló. Por favor, regrese y vuelva a intentarlo.";
+                        $errors[] = "Lo sentimos, el registro falló. Por favor, regrese y vuelva a intentarlo.";
                     }
                 }
             

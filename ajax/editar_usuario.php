@@ -1,4 +1,5 @@
 <?php
+require_once("../classes/Login.php");
 include('is_logged.php');//Archivo verifica que el usario que intenta acceder a la URL esta logueado
 // checking for minimum PHP version
 if (version_compare(PHP_VERSION, '5.3.7', '<')) {
@@ -32,9 +33,9 @@ if (version_compare(PHP_VERSION, '5.3.7', '<')) {
 					
                
 					// write new user's data into database
-                    $sql = "update Usuarios SET usuario='".$user_name."',email='".$user_email."',facilidad='".$user_facilidad."',usuario_modifica='".$_SESSION['user_id']."', fecha_modifica='".$date_added."' 
+                    $sql = "update Usuarios SET usuario='".$user_name."',email='".$user_email."',facilidad='".$user_facilidad."',usuario_modifica='".$_SESSION['user_id']."', fecha_modifica= DATE(NOW()) 
                             WHERE id_usuario='".$user_id."';";
-                    $query_update = odbc_exec($con,$sql);
+                    $query_update = mysqli_query($con,$sql);
 
                     // if user has been added successfully
                     if ($query_update) {
