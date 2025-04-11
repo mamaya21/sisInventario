@@ -1,53 +1,99 @@
 <?php
 ob_start();
+
 ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Cargar autoload y configuración
-require_once '../libraries/PhpSpreadsheet/autoload.php';
+require_once ("../config/db.php");
+require_once ("../config/conexion.php");
+require_once ("../vendor/autoload.php");
+
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\Settings;
-use MyCache\ArrayCache;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 
-// Configurar caché
-Settings::setCache(new ArrayCache());
+$consulta = $_GET["sql"];
+$resultado = mysqli_query($con, $consulta);
 
-// Crear hoja de cálculo
-$spreadsheet = new Spreadsheet();
-$sheet = $spreadsheet->getActiveSheet();
-$sheet->setTitle("Tipos de Material");
+if ($resultado->num_rows > 0) {
+    if (PHP_SAPI == 'cli') die('Este archivo solo se puede ver desde un navegador web');
 
-// Agregar encabezados
-$sheet->setCellValue('A1', 'ID');
-$sheet->setCellValue('B1', 'Nombre');
-$sheet->setCellValue('C1', 'Estado');
+    $spreadsheet = new Spreadsheet();
+    $spreadsheet->getProperties()
+        ->setCreator("ALMACEN EXPRESS")
+        ->setLastModifiedBy("ALMACEN EXPRES")
+        ->setTitle("Reporte Excel")
+        ->setSubject("Reporte Excel")
+        ->setDescription("Reporte de Tipos de material")
+        ->setKeywords("reporte destina")
+        ->setCategory("Reporte excel");
 
-// Agregar datos estáticos
-$data = [
-    [1, 'Cable Coaxial', 'Activo'],
-    [2, 'Canaleta Plástica', 'Activo'],
-    [3, 'Tubos Conduit', 'Inactivo'],
-];
+    $sheet = $spreadsheet->getActiveSheet();
+    $sheet->mergeCells('A1:D1');
+    $sheet->setCellValue('A1', "Reporte de Tipos de Material");
+    $sheet->setCellValue('A3', 'CODIGO');
+    $sheet->setCellValue('B3', 'NOMBRE');
+    $sheet->setCellValue('C3', 'DESCRIPCION');
+    $sheet->setCellValue('D3', 'ESTADO');
 
-$row = 2;
-foreach ($data as $item) {
-    $sheet->setCellValue("A{$row}", $item[0]);
-    $sheet->setCellValue("B{$row}", $item[1]);
-    $sheet->setCellValue("C{$row}", $item[2]);
-    $row++;
+    $i = 4;
+    while ($fila = mysqli_fetch_array($resultado)) {
+        $sheet->setCellValue('A' . $i, $fila['id_tipo']);
+        $sheet->setCellValue('B' . $i, $fila['nombre']);
+        $sheet->setCellValue('C' . $i, $fila['descripcion']);
+        $sheet->setCellValue('D' . $i, ($fila['estado'] == 1) ? "Activo" : "Inactivo");
+        $i++;
+    }
+
+    $estiloTituloReporte = [
+        'font' => ['name' => 'Verdana', 'bold' => true, 'size' => 16, 'color' => ['rgb' => 'FFFFFF']],
+        'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['argb' => 'FF220835']],
+        'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER, 'vertical' => Alignment::VERTICAL_CENTER],
+    ];
+    $sheet->getStyle('A1:D1')->applyFromArray($estiloTituloReporte);
+
+    $estiloTituloColumnas = [
+        'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
+        'fill' => [
+            'fillType' => Fill::FILL_GRADIENT_LINEAR,
+            'rotation' => 80,
+            'startColor' => ['rgb' => '7CFC00'],
+            'endColor' => ['argb' => '7CFC00']
+        ],
+        'borders' => [
+            'top' => ['borderStyle' => Border::BORDER_MEDIUM, 'color' => ['rgb' => '143860']]
+        ],
+        'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER, 'vertical' => Alignment::VERTICAL_CENTER],
+    ];
+    $sheet->getStyle('A3:D3')->applyFromArray($estiloTituloColumnas);
+
+    $sheet->getStyle("A4:D" . ($i - 1))->applyFromArray([
+        'font' => ['name' => 'Arial', 'color' => ['rgb' => '000000']],
+        'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['argb' => 'FFFFFF']],
+        'borders' => [
+            'left' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => '3a2a47']]
+        ]
+    ]);
+
+    foreach (range('A', 'D') as $col) {
+        $sheet->getColumnDimension($col)->setAutoSize(true);
+    }
+
+    $sheet->setTitle('TipoMateriales');
+    $sheet->freezePane('A4');
+
+    while (ob_get_level()) { ob_end_clean(); }
+
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment;filename="Reporte de Tipo de Materiales.xlsx"');
+    header('Cache-Control: max-age=0');
+
+    $writer = new Xlsx($spreadsheet);
+    $writer->save('php://output');
+    exit;
+} else {
+    echo 'No hay resultados para mostrar';
 }
-
-// Ajuste automático de columnas
-foreach (range('A', 'C') as $col) {
-    $sheet->getColumnDimension($col)->setAutoSize(true);
-}
-
-// Descargar como Excel
-header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;filename="reporte_tipos_material.xlsx"');
-header('Cache-Control: max-age=0');
-
-$writer = new Xlsx($spreadsheet);
-$writer->save('php://output');
-exit;

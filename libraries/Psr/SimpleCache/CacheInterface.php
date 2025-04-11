@@ -1,11 +1,7 @@
 <?php
 namespace Psr\SimpleCache;
 
-/**
- * PSR-16 Simple Cache Interface
- */
-interface CacheInterface
-{
+interface CacheInterface {
     public function get($key, $default = null);
     public function set($key, $value, $ttl = null);
     public function delete($key);

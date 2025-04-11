@@ -1,3 +1,3 @@
 <?php
-// Clase ZipStream principal
-?>
+namespace ZipStream;
+class ZipStream {}

@@ -3,8 +3,7 @@ namespace MyCache;
 
 use Psr\SimpleCache\CacheInterface;
 
-class ArrayCache implements CacheInterface
-{
+class ArrayCache implements CacheInterface {
     private $cache = [];
 
     public function get($key, $default = null) {

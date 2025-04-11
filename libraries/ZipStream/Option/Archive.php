@@ -1,3 +1,3 @@
 <?php
-// Clase Archive (ZipStream)
-?>
+namespace ZipStream\Option;
+class Archive {}
