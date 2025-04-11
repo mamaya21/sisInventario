@@ -1,4 +1,5 @@
 <?php
+	require_once("../classes/Login.php");
 	include('is_logged.php');//Archivo verifica que el usario que intenta acceder a la URL esta logueado
 
 	/*Inicia validacion del lado del servidor*/
@@ -19,8 +20,10 @@
 		$descripcion=$_POST["descripcion"];
 		$descripcion=str_replace( "'", "''", $descripcion);
 
+		$usuario = $_SESSION['user_id'];
+
 		//SENTENCIA MySQL
-		$sql="INSERT INTO tipos_material (nombre, descripcion, fecha_crea, estado) VALUES ('$nombre','$descripcion', DATE(NOW()), 1)";
+		$sql="INSERT INTO tipos_material (nombre, descripcion, fecha_crea, usuario_crea, estado) VALUES ('$nombre','$descripcion', DATE(NOW()), $usuario,1)";
 
 		$query_new_insert = mysqli_query($con, $sql);
 		if ($query_new_insert) {

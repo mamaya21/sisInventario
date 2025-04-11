@@ -86,7 +86,7 @@
 			?>
 			<div class="table-responsive">
 				<div style="margin-bottom: 10px;">
-					<a href="ajax/reporteremite.php?sql=<?php echo urlencode($sql_repor); ?>">
+					<a href="ajax/reportetipo.php?sql=<?php echo urlencode($sql_repor); ?>">
 						Descargar Reporte <img src="img/excel.png" />
 					</a>
 					<a href="#" onclick='imprimir_reporte("<?php echo $q; ?>");'>

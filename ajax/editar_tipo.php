@@ -1,5 +1,7 @@
 <?php
+	require_once("../classes/Login.php");
 	include('is_logged.php');//Archivo verifica que el usario que intenta acceder a la URL esta logueado
+
 	/*Inicia validacion del lado del servidor*/
 	if (empty($_POST['mod_idtipo'])) {
            $errors[] = "ID vacío";
@@ -26,8 +28,9 @@
 		$estado=intval($_POST['mod_estado']);
 		
 		$id_tipo=intval($_POST['mod_idtipo']);
+		$usuario = $_SESSION['user_id'];
 
-		$sql="UPDATE tipos_material SET nombre='".$nombre."', descripcion='".$descripcion."', fecha_modifica= DATE(NOW()), estado=".$estado." WHERE id_tipo='".$id_tipo."'";
+		$sql="UPDATE tipos_material SET nombre='".$nombre."', descripcion='".$descripcion."', fecha_modifica= DATE(NOW()), usuario_modifica =".$usuario.", estado=".$estado." WHERE id_tipo='".$id_tipo."'";
 
 		$query_update = mysqli_query($con, $sql);
 		if ($query_update) {
