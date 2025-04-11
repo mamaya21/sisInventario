@@ -16,14 +16,14 @@
 	require_once ("config/conexion.php");//Contiene funcion que conecta a la base de datos
 
 	$action="";
+	$active_stock= "";
+	$active_movimientos="";
 	$active_materiales="";
 	$active_tipos="active";	
-	$active_clientes="";
-	$active_remitentes="";
-	$active_subcontrata="";
-	$active_transportes="";
+	$active_unidades="";
+	$active_reportes = "";
 	$active_usuarios="";
-	$active_tarifarios="";
+
 	$title="Tipos de materiales";
 ?>
 <!DOCTYPE html>
@@ -83,7 +83,7 @@
 	<div class="panel panel-info">
 		<div class="panel-heading">
 			<div class="btn-group pull-right" style="padding-left:5px;">
-					<a  href="consolidados.php" class="btn btn-info"><span class="glyphicon glyphicon-th-list" ></span> Ir a Materiales </a>
+					<a  href="materiales.php" class="btn btn-info"><span class="glyphicon glyphicon-th-list" ></span> Ir a Materiales </a>
 			</div>
 
 		    <div class="btn-group pull-right">
@@ -118,7 +118,7 @@
   </div>
 
 
-		<form name="importa" method="post" action="<?php echo $_SERVER['PHP_SELF'] ; ?>" enctype="multipart/form-data" >
+		<!-- <form name="importa" method="post" action="<?php echo $_SERVER['PHP_SELF'] ; ?>" enctype="multipart/form-data" >
 
 			<p4 style="padding-left: 15px;"><b>Carga Masiva : </b></p4>
 			<a href="plantillas/PLANTILLA REMITENTES (CLIENTES).xlsx" download="PLANTILLA REMITENTES (CLIENTES)" style="padding-right: 15px;padding-left: 5px;">
@@ -127,7 +127,7 @@
 			<span class="btn btn-default btn-file"> Cargar Plantilla <input type="file" class="btn btn-info" name="excel" style="background: white; padding-right: 5px;"></span>
 			<span class="btn btn-default btn-submit" style="background: #FF9900;"> Importar <input type="submit" class="btn btn-info" name="enviar" value="Importar" /></span>
 	        <input type="hidden" class="btn btn-info" value="upload" name="action" />
-    	</form>
+    	</form> -->
 
 	<?php
     extract($_POST);

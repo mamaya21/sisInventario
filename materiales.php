@@ -16,19 +16,26 @@
 	require_once ("config/conexion.php");//Contiene funcion que conecta a la base de datos
 
 	$action="";
+	$active_stock= "";
+	$active_movimientos="";
 	$active_materiales="active";
 	$active_tipos="";	
-	$active_clientes="";
-	$active_remitentes="";
-	$active_subcontrata="";
-	$active_transportes="";
+	$active_unidades="";
+	$active_reportes = "";
 	$active_usuarios="";
-	$active_tarifarios="";
+	
 	$title="Gestión de materiales";
 ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
+  	<link rel='stylesheet' href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css'>
+    <link rel='stylesheet' href='http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css'>
+
+  	<script type="text/javascript" src="https://formden.com/static/cdn/formden.js"></script>
+	<link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
+	<link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css"/>
+
     <?php include("head.php");?>
 
     	<style type="text/css">
@@ -72,6 +79,10 @@
 			    display: block;
 			    background: #FF9900;
 			}
+
+			.ui-autocomplete {
+				z-index: 1051 !important; /* Bootstrap modal está en 1050 */
+			}
     	</style>
   </head>
   <body>
@@ -86,17 +97,16 @@
 					<a  href="tipoMateriales.php" class="btn btn-info"><span class="glyphicon glyphicon-th-list" ></span> Tipo de Materiales </a>
 			</div>
 
-		    <div class="btn-group pull-right">
-				<button type='button' class="btn btn-info" data-toggle="modal" data-target="#nuevoRemitente"><span class="glyphicon glyphicon-plus" ></span> Nuevo Material</button>
+			<div class="btn-group pull-right" style="padding-left:5px;">
+					<a  href="nuevo_material.php" class="btn btn-info"><span class="glyphicon glyphicon-plus" ></span> Nuevo Material </a>
 			</div>
-			
+
 			<h4><i class='glyphicon glyphicon-search'></i> Buscar Materiales</h4>
 		</div>
 		<div class="panel-body">
 
 			<?php
-				include("modal/registro_remitentes.php");
-				include("modal/editar_remitentes.php");
+				include("modal/editar_material.php");
 			?>
 			<form class="form-horizontal" role="form" id="datos_cotizacion">
 
@@ -118,7 +128,7 @@
   </div>
 
 
-		<form name="importa" method="post" action="<?php echo $_SERVER['PHP_SELF'] ; ?>" enctype="multipart/form-data" >
+		<!-- <form name="importa" method="post" action="<?php echo $_SERVER['PHP_SELF'] ; ?>" enctype="multipart/form-data" >
 
 			<p4 style="padding-left: 15px;"><b>Carga Masiva : </b></p4>
 			<a href="plantillas/PLANTILLA REMITENTES (CLIENTES).xlsx" download="PLANTILLA REMITENTES (CLIENTES)" style="padding-right: 15px;padding-left: 5px;">
@@ -127,7 +137,7 @@
 			<span class="btn btn-default btn-file"> Cargar Plantilla <input type="file" class="btn btn-info" name="excel" style="background: white; padding-right: 5px;"></span>
 			<span class="btn btn-default btn-submit" style="background: #FF9900;"> Importar <input type="submit" class="btn btn-info" name="enviar" value="Importar" /></span>
 	        <input type="hidden" class="btn btn-info" value="upload" name="action" />
-    	</form>
+    	</form> -->
 
 	<?php
     extract($_POST);
@@ -241,7 +251,78 @@
 	<?php
 	include("footer.php");
 	?>
+
+	<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+	<script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
+	<script src='http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js'></script>
+	<script src='http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore.js'></script>
+
 	<script type="text/javascript" src="js/VentanaCentrada.js"></script>
-	<script type="text/javascript" src="js/remitentes.js"></script>
+	<script type="text/javascript" src="js/materiales.js"></script>
+
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+	<script type="text/javascript">
+		$(function() {
+			$("#mod_tipomaterial").autocomplete({				
+				source: "./ajax/autocomplete/tipo_materiales.php",
+				minLength: 2,
+				select: function(event, ui) {
+					console.log("ui: "+ ui);
+					event.preventDefault();
+					$('#mod_tipomaterial').val(ui.item.nombre);
+					$('#mod_idtipomaterial').val(ui.item.id_tipo);
+					$('#mod_idtipo').val(ui.item.id_tipo);
+				}
+			});
+		});
+
+		$("#mod_tipomaterial" ).on( "keydown", function( event ) {
+			if (event.keyCode== $.ui.keyCode.LEFT || event.keyCode== $.ui.keyCode.RIGHT || event.keyCode== $.ui.keyCode.UP || event.keyCode== $.ui.keyCode.DOWN || event.keyCode== $.ui.keyCode.DELETE || event.keyCode== $.ui.keyCode.BACKSPACE )
+			{
+				$("#mod_idtipomaterial" ).val("");
+				$("#mod_idtipo" ).val("");
+
+			}
+				
+			if (event.keyCode==$.ui.keyCode.DELETE){
+				$("#mod_tipomaterial" ).val("");
+				$("#mod_idtipomaterial" ).val("");
+				$("#mod_idtipo" ).val("");
+			}
+		});
+
+		$(function() {
+			$("#mod_unidadmedida").autocomplete({				
+				source: "./ajax/autocomplete/unidad_medida.php",
+				minLength: 2,
+				select: function(event, ui) {
+					console.log("ui: "+ ui);
+					event.preventDefault();
+					$('#mod_unidadmedida').val(ui.item.nombre);
+					$('#mod_idunidadmedida').val(ui.item.id_unidad);
+					$('#mod_idunidad').val(ui.item.id_unidad);
+				}
+			});
+		});
+
+		$("#mod_unidadmedida" ).on( "keydown", function( event ) {
+			if (event.keyCode== $.ui.keyCode.LEFT || event.keyCode== $.ui.keyCode.RIGHT || event.keyCode== $.ui.keyCode.UP || event.keyCode== $.ui.keyCode.DOWN || event.keyCode== $.ui.keyCode.DELETE || event.keyCode== $.ui.keyCode.BACKSPACE )
+			{
+				$("#mod_idunidadmedida" ).val("");
+				$("#mod_idunidad" ).val("");
+
+			}
+				
+			if (event.keyCode==$.ui.keyCode.DELETE){
+				$("#mod_unidadmedida" ).val("");
+				$("#mod_idunidadmedida" ).val("");
+				$("#mod_idunidad" ).val("");
+			}
+		});
+	</script>
+	
+
   </body>
 </html>

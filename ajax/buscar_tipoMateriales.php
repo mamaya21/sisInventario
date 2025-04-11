@@ -1,9 +1,9 @@
 <?php
 	 error_reporting(E_ALL ^ E_DEPRECATED);
 	/*-------------------------
-	Autor: Obed Alvarado
-	Web: obedalvarado.pw
-	Mail: info@obedalvarado.pw
+	Autor: Marco Amaya
+	Web: https://marcoamayaquiroz.com/
+	Mail: marco1021tam@gmail.com
 	---------------------------*/
 	include('is_logged.php');//Archivo verifica que el usario que intenta acceder a la URL esta logueado
 	/* Connect To Database*/
@@ -89,10 +89,11 @@
 					<a href="ajax/reportetipo.php?sql=<?php echo urlencode($sql_repor); ?>">
 						Descargar Reporte <img src="img/excel.png" />
 					</a>
-					<a href="#" onclick='imprimir_reporte("<?php echo $q; ?>");'>
+					<a href="ajax/reportetipo_PDF.php?sql=<?php echo urlencode($sql_repor); ?>">
 						Imprimir Reporte <img src="img/pdf.png" />
 					</a>
 				</div>
+				
 				<table class="table">
 					<thead>
 						<tr class="info">

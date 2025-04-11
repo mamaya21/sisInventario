@@ -86,7 +86,7 @@ $( "#editar_tipo" ).submit(function( event ) {
 
 		Swal.fire({
 			title: "Eliminar",
-			text: "Realmente deseas eliminar el tipo de material?",
+			text: "Realmente deseas eliminar el registro?",
 			icon: "warning",
 			showCancelButton: true,
 			confirmButtonColor: "#d33",
@@ -106,7 +106,7 @@ $( "#editar_tipo" ).submit(function( event ) {
 					success: function(datos){
 						Swal.fire({
 							title: "Eliminado!",
-							text: "El tipo de material ha sido eliminado.",
+							text: "El registro se ha sido eliminado.",
 							icon: "success"
 						});
 

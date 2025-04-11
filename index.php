@@ -1,3 +1,3 @@
 <?php
-header("Location: materiales.php");
+header("Location: stock.php");
 ?>
