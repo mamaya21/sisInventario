@@ -51,7 +51,7 @@ if (version_compare(PHP_VERSION, '5.3.7', '<')) {
                 $usuario_crea = $_SESSION['user_id'];
                 
                 // Verificar si el usuario ya existe
-                $sql = "SELECT * FROM Usuarios WHERE usuario = '$user_name'";
+                $sql = "SELECT * FROM usuarios WHERE usuario = '$user_name'";
                 $query_check_user_name = mysqli_query($con, $sql);
                 $query_check_user = mysqli_num_rows($query_check_user_name);
 
@@ -59,7 +59,7 @@ if (version_compare(PHP_VERSION, '5.3.7', '<')) {
                     $errors[] = "Lo sentimos, el nombre de usuario ya está en uso.";
                 } else {
                     // Insertar nuevo usuario
-                    $sql = "INSERT INTO Usuarios (usuario, pass, usuario_crea, fecha_crea, facilidad, email)
+                    $sql = "INSERT INTO usuarios (usuario, pass, usuario_crea, fecha_crea, facilidad, email)
                             VALUES ('$user_name', '$user_password_hash', '$usuario_crea', DATE(NOW()), '$user_facilidad', '$user_email')";
                     $query_new_user_insert = mysqli_query($con, $sql);
 

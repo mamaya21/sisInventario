@@ -22,12 +22,8 @@
 	$active_tipos="";	
 	$active_unidades="active";
 	$active_reportes = "";
-	
-	$active_remitentes="";
-	$active_subcontrata="";
-	$active_transportes="";
 	$active_usuarios="";
-	$active_tarifarios="";
+	
 	$title="Unidades de Medida";
 ?>
 <!DOCTYPE html>

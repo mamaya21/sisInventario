@@ -1,10 +1,12 @@
 ﻿<?php
 /*Datos de conexion a la base de datos*/
 define('DB_HOST', '127.0.0.1');//DB_HOST:  generalmente suele ser "127.0.0.1"
-define('DB_USER', 'root');//Usuario de tu base de datos
-//define('DB_PASS', '5$%13nD3r-r00t%$'); //Contraseña del usuario de la base de datos
-define('DB_PASS', ''); //Contraseña del usuario de la base de datos
-define('DB_NAME', 'sisinventario');//Nombre de la base de datos
+//define('DB_USER', 'u957122651_formula2025');//Usuario de tu base de datos
+define('DB_USER', 'root');//Usuario de tu base de datos LOCAL
+//define('DB_PASS', 'F0rmul42025!'); //Contraseña del usuario de la base de datos
+define('DB_PASS', ''); //Contraseña del usuario de la base de datos LOCAL
+//define('DB_NAME', 'u957122651_sisInventario');//Nombre de la base de datos
+define('DB_NAME', 'sisInventario');//Nombre de la base de datos LOCAL
 
 /*Datos de la empresa*/
 define('NOMBRE_EMPRESA', 'Almacen Express');

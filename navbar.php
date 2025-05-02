@@ -26,7 +26,7 @@
         <!-- <li class="<?php echo $active_reportes;?>"><a href="reportes.php"><i class='glyphicon glyphicon-paperclip'></i> Reportes</a></li> -->
 
     <?php
-      if($_SESSION['facilidad']=="Administrador"){
+      if($_SESSION['facilidad']=="Administrador" || $_SESSION['facilidad']=="Supervisor"){
     ?>
 		<li class="<?php echo $active_usuarios;?>"><a href="usuarios.php"><i  class='glyphicon glyphicon-user'></i> Usuarios</a></li>
     <?php

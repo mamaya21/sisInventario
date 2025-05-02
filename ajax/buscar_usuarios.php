@@ -5,21 +5,23 @@
 	Web: -
 	Mail: marco1021tam@gmail.com
 	---------------------------*/
+	include('is_logged.php');//Archivo verifica que el usario que intenta acceder a la URL esta logueado
 	/* Connect To Database*/
 	require_once ("../config/db.php");//Contiene las variables de configuracion para conectar a la base de datos
 	require_once ("../config/conexion.php");//Contiene funcion que conecta a la base de datos
-	include('is_logged.php');//Archivo verifica que el usario que intenta acceder a la URL esta logueado
-	$action = (isset($_REQUEST['action'])&& $_REQUEST['action'] !=NULL)?$_REQUEST['action']:'';
+
+	$action = (isset($_REQUEST['action']) && $_REQUEST['action'] != NULL) ? $_REQUEST['action'] : '';
+
 	if (isset($_GET['id'])) {
 		$user_id = intval($_GET['id']);
 	
 		// Consulta para verificar si el usuario existe
-		$query = mysqli_query($con, "SELECT * FROM Usuarios WHERE id_usuario = '$user_id'");
+		$query = mysqli_query($con, "SELECT * FROM usuarios WHERE id_usuario = '$user_id'");
 		$rw_user = mysqli_fetch_array($query);
 	
 		if ($rw_user) {
 			// Si existe, eliminamos el registro
-			$delete = "DELETE FROM Usuarios WHERE id_usuario = '$user_id'";
+			$delete = "DELETE FROM usuarios WHERE id_usuario = '$user_id'";
 			$delete_result = mysqli_query($con, $delete);
 	
 			if ($delete_result) {
@@ -45,7 +47,7 @@
          $q = $_REQUEST['q'];
          $q= str_replace("'", "''", $q);
 		 $aColumns = array('usuario');//Columnas de busqueda
-		 $sTable = "Usuarios";
+		 $sTable = "usuarios";
 		 $sWhere = "";
 		if ( $_GET['q'] != "" )
 		{
